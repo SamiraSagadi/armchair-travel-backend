@@ -7,6 +7,7 @@ import java.util.List;
 
 @RequestMapping("api/users")
 @RestController
+@CrossOrigin("*")
 public class UserController {
 
 
@@ -27,4 +28,15 @@ public class UserController {
         userService.addNewUser(newUser);
     }
 
+//    @PutMapping(path = "{userEmail}")
+//    public void updateUser(@PathVariable("userEmail") String userEmail,
+//                           @RequestBody User user){
+//        userService.updateUser(userEmail, user);
+//
+//    }
+
+    @DeleteMapping(path = "{userEmail}")
+    public void deleteUser(@PathVariable("userEmail") String email ){
+        userService.deleteUser(email);
+    }
 }

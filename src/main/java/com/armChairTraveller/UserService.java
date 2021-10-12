@@ -2,12 +2,16 @@ package com.armChairTraveller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Scanner;
 
 @Service
 public class UserService {
 
+    Scanner scanner = new Scanner(System.in);
     private final UserRepository userRepository;
 
     @Autowired
@@ -22,7 +26,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public String addNewUser(User newUser) {
+    public void addNewUser(User newUser) {
         userRepository.findUserByEmail(newUser.getEmail())
                 .ifPresentOrElse(user -> {
                     throw new IllegalStateException("Person with this email address: " + newUser.getEmail() + " is already registered.");
@@ -31,7 +35,7 @@ public class UserService {
                                     newUser.getFirstName() != null &&
                                     newUser.getLastName() != null &&
                                     newUser.getEmail() != null &&
-                            newUser.getPassword() != null
+                                            newUser.getPassword() != null
                     ){
                         userRepository.save(newUser);
                     }
@@ -39,16 +43,12 @@ public class UserService {
                         throw new IllegalStateException("All information must be provided!");
                     }
                 });
-        return "Successfully signed up";
     }
-//public void addNewUser(User newUser) {
-//        userRepository.save(newUser);
-//
-//    }
 
-//    public void addNewUser(User newUser) {
-//        userRepository.save(newUser);
-//
-//    }
+    public void deleteUser(String userEmail){
+      userRepository.findUserByEmail(userEmail).ifPresent(userRepository::delete);
+    }
+
 
 }
+
